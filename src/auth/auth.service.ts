@@ -29,7 +29,7 @@ export class AuthService {
     return await this.usersService.create({
       name,
       email,
-      password: await bcriptjs.hash(password, 10),
+      password,
       photo, // Guardar la foto si está presente
     });
   }
