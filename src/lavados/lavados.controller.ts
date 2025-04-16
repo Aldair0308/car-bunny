@@ -1,0 +1,45 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { LavadosService } from './lavados.service';
+import { CreateLavadoDto } from './dto/create-lavado.dto';
+import { UpdateLavadoDto } from './dto/update-lavado.dto';
+
+@Controller('lavados')
+export class LavadosController {
+  constructor(private readonly lavadosService: LavadosService) {}
+
+  @Post()
+  async create(@Body() createLavadoDto: CreateLavadoDto) {
+    return this.lavadosService.create(createLavadoDto);
+  }
+
+  @Get()
+  async findAll() {
+    return this.lavadosService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.lavadosService.findOne(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateLavadoDto: UpdateLavadoDto,
+  ) {
+    return this.lavadosService.update(id, updateLavadoDto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.lavadosService.remove(id);
+  }
+}
