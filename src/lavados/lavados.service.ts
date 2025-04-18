@@ -39,4 +39,27 @@ export class LavadosService {
   async remove(id: string): Promise<Lavado> {
     return this.lavadoModel.findByIdAndDelete(id).exec();
   }
+
+  async findByResponsibleGroupedByDate(responsible: string) {
+    const formattedResponsible = responsible.replace(/-/g, ' ');
+    return this.lavadoModel
+      .aggregate([
+        {
+          $match: {
+            responsible: formattedResponsible,
+            status: 'completed',
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $dateToString: { format: '%Y-%m-%d', date: '$date' },
+            },
+            lavados: { $push: '$$ROOT' },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ])
+      .exec();
+  }
 }

@@ -35,6 +35,13 @@ export class LavadosController {
     return this.lavadosService.findFinished();
   }
 
+  @Get('responsible/:responsible')
+  async findByResponsibleGroupedByDate(
+    @Param('responsible') responsible: string,
+  ) {
+    return this.lavadosService.findByResponsibleGroupedByDate(responsible);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.lavadosService.findOne(id);
