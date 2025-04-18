@@ -18,6 +18,14 @@ export class LavadosService {
     return this.lavadoModel.find().exec();
   }
 
+  async findPending(): Promise<Lavado[]> {
+    return this.lavadoModel.find({ status: 'pending' }).exec();
+  }
+
+  async findFinished(): Promise<Lavado[]> {
+    return this.lavadoModel.find({ status: 'completed' }).exec();
+  }
+
   async findOne(id: string): Promise<Lavado> {
     return this.lavadoModel.findById(id).exec();
   }

@@ -25,6 +25,16 @@ export class LavadosController {
     return this.lavadosService.findAll();
   }
 
+  @Get('pending')
+  async findPending() {
+    return this.lavadosService.findPending();
+  }
+
+  @Get('completed')
+  async findFinished() {
+    return this.lavadosService.findFinished();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.lavadosService.findOne(id);
