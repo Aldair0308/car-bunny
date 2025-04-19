@@ -15,6 +15,9 @@ class Extra {
 
   @Prop()
   price: number;
+
+  @Prop()
+  quantity: number;
 }
 
 @Schema()
