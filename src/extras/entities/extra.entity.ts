@@ -17,6 +17,9 @@ export class Extra {
   @Prop()
   price: number;
 
+  @Prop()
+  type: string;
+
   @Prop({ default: 'active' })
   state: string;
 }

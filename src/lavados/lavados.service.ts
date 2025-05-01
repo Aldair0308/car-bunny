@@ -62,4 +62,77 @@ export class LavadosService {
       ])
       .exec();
   }
+
+  async findByWeek(): Promise<Lavado[]> {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
+    monday.setHours(0, 0, 0, 0);
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+
+    return this.lavadoModel
+      .find({
+        date: {
+          $gte: monday,
+          $lte: sunday,
+        },
+      })
+      .exec();
+  }
+
+  async removeByWeek(startDate: string): Promise<{ deleted: number }> {
+    const monday = new Date(startDate);
+    monday.setHours(0, 0, 0, 0);
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+
+    const result = await this.lavadoModel
+      .deleteMany({
+        date: {
+          $gte: monday,
+          $lte: sunday,
+        },
+      })
+      .exec();
+
+    return { deleted: result.deletedCount };
+  }
+
+  async findAllGroupedByWeek() {
+    return this.lavadoModel
+      .aggregate([
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: '%Y-%m-%d',
+                date: {
+                  $dateFromParts: {
+                    year: { $year: '$date' },
+                    month: { $month: '$date' },
+                    day: {
+                      $subtract: [
+                        { $dayOfMonth: '$date' },
+                        { $subtract: [{ $dayOfWeek: '$date' }, 1] },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            firstId: { $first: '$_id' },
+            count: { $sum: 1 },
+            lavados: { $push: '$$ROOT' },
+          },
+        },
+        { $sort: { _id: -1 } },
+      ])
+      .exec();
+  }
 }

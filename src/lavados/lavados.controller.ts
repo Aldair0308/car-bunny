@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { LavadosService } from './lavados.service';
 import { CreateLavadoDto } from './dto/create-lavado.dto';
@@ -58,5 +59,20 @@ export class LavadosController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.lavadosService.remove(id);
+  }
+
+  @Get('week/current')
+  async findCurrentWeek() {
+    return this.lavadosService.findByWeek();
+  }
+
+  @Delete('week/delete')
+  async removeByWeek(@Query('startDate') startDate: string) {
+    return this.lavadosService.removeByWeek(startDate);
+  }
+
+  @Get('week/all')
+  async findAllGroupedByWeek() {
+    return this.lavadosService.findAllGroupedByWeek();
   }
 }
