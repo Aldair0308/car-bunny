@@ -7,7 +7,9 @@ import { ExtrasModule } from './extras/extras.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/carbunnydb'),
+    MongooseModule.forRoot(
+      'mongodb://mongo:hzFnpQynqjHUIubewLUwrtaPqLfLdPJx@maglev.proxy.rlwy.net:23993',
+    ),
     UsersModule,
     AuthModule,
     LavadosModule,
