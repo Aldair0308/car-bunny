@@ -25,6 +25,11 @@ export class ExtrasController {
     return this.extrasService.findAll();
   }
 
+  @Get('ofertas')
+  findOffers() {
+    return this.extrasService.findOffers();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.extrasService.findOne(id);

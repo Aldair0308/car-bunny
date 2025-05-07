@@ -20,6 +20,10 @@ export class ExtrasService {
     return this.extraModel.find().exec();
   }
 
+  async findOffers(): Promise<Extra[]> {
+    return this.extraModel.find({ type: 'o' }).exec();
+  }
+
   async findOne(id: string): Promise<Extra> {
     return this.extraModel.findById(id).exec();
   }
